@@ -41,13 +41,6 @@ def backend(time_range, checklist, usd_input, eur_input, gbp_input, chf_input,
                     plot_types=checklist)
 
     # Value variation over time (right side)
-    dfff = pd.read_csv("intro_bees.csv")
-    dff = dfff.copy()
-    dff = dff[dff["Year"] == 2017]
-    dff = dff[dff["Affected by"] == "Varroa_mites"]
-
-    big_graph \
-        = px.line(dff, x='Pct of Colonies Impacted',
-                  y='Pct of Colonies Impacted')
+    big_graph = px.line()
 
     return [usd_graph, eur_graph, gbp_graph, chf_graph, big_graph]

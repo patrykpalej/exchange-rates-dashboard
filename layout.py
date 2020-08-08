@@ -9,39 +9,39 @@ def frontend():
                 style={"text-align": "center", "fontSize": "50px",
                        "margin": "0"}),
 
-        html.H2("Opcje wizualizacji", style={"top": "18%", "left": "39%",
+        html.H2("Opcje wizualizacji", style={"top": "18%", "left": "40%",
                                              "position": "absolute"}),
 
         dcc.RadioItems(id="select_time_range", options=[
             {"label": "1 miesiąc", "value": 1},
             {"label": "1 rok", "value": 2},
             {"label": "5 lat", "value": 3},
-            {"label": "Cały przedział", "value": 4}], value=3,
+            {"label": "Cały przedział", "value": 4}], value=2,
                        style={"width": "10%", "position": "absolute",
-                              "display": "grid", "left": "39%", "top": "25%",
+                              "display": "grid", "left": "40%", "top": "25%",
                               "height": "12%"}),
 
         dcc.Checklist(id="checklist", value=[1], options=[
             {"label": "Cena w PLN", "value": 1},
             {"label": "Średnia cena we wszystkich walutach", "value": 2}],
                       style={"width": "10%", "position": "absolute",
-                             "display": "grid",
-                             "left": "39%", "top": "45%", "height": "12%"}),
+                             "display": "grid", "left": "40%", "top": "45%",
+                             "height": "12%"}),
 
         html.Div([
-            dcc.Graph(style={"width": "38%", "height": "27%",
+            dcc.Graph(style={"width": "39%", "height": "26%",
                              "position": "absolute", "top": "0%"},
                       id="usd_graph"),
 
-            dcc.Graph(style={"width": "38%", "height": "27%",
+            dcc.Graph(style={"width": "39%", "height": "26%",
                              "position": "absolute", "top": "25%"},
                       id="eur_graph"),
 
-            dcc.Graph(style={"width": "38%", "height": "27%",
+            dcc.Graph(style={"width": "39%", "height": "26%",
                              "position": "absolute", "top": "50%"},
                       id="gbp_graph"),
 
-            dcc.Graph(style={"width": "38%", "height": "27%",
+            dcc.Graph(style={"width": "39%", "height": "26%",
                              "position": "absolute", "top": "75%"},
                       id="chf_graph"),
         ], style={"height": "90%", "margin-top": "2%", "left": "0"}),
