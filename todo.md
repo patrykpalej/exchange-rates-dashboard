@@ -1,5 +1,11 @@
 # To Do:
 
+## Ogólne
+
+- [ ] Cena dla jednego dnia jako średnia wszystkich godzin
+
+
+
 ## Lewa strona 
 
 - [ ] Wprowadzić ciągłe pobieranie nowych danych
