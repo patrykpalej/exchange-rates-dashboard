@@ -6,12 +6,13 @@ import matplotlib.pyplot as plt
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
 
 from funcs import *
 
 
-def backend(time_range, checklist, usd_input, eur_input, gbp_input, chf_input,
-            start_date, end_date):
+def backend(time_range, checklist, start_date, end_date, n_clicks,
+            usd_input, eur_input, gbp_input, chf_input):
 
     # Exchange rates (left side)
     df = pd.read_csv("exchange_rates_99_20.csv", sep=';')
@@ -42,5 +43,14 @@ def backend(time_range, checklist, usd_input, eur_input, gbp_input, chf_input,
 
     # Value variation over time (right side)
     big_graph = px.line()
+
+    if usd_input is None and eur_input is None and gbp_input is None \
+            and chf_input is None:
+        pass
+    else:
+        big_graph = px.line([usd_input, eur_input], [gbp_input, chf_input])
+
+    # big_graph = px.line()
+    print(n_clicks)
 
     return [usd_graph, eur_graph, gbp_graph, chf_graph, big_graph]

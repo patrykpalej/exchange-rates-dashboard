@@ -67,7 +67,9 @@ def frontend():
                             style={"top": "15%", "right": "5%",
                                    "position": "absolute"}),
 
-        html.Button("Oblicz",
+
+
+        html.Button("Oblicz", id="calculate", n_clicks=0,
                     style={"width": "150px", "position": "absolute",
                            "top": "30%",
                            "right": "10%", "height": "30px"}),

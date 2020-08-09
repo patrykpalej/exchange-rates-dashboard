@@ -5,7 +5,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 
 from funcs import *
 from layout import frontend
@@ -26,19 +26,25 @@ app.layout = frontend()
 
      [Input(component_id='select_time_range', component_property='value'),
       Input(component_id="checklist", component_property="value"),
-      Input(component_id='usd_input', component_property='value'),
-      Input(component_id='eur_input', component_property='value'),
-      Input(component_id='gbp_input', component_property='value'),
-      Input(component_id='chf_input', component_property='value'),
+      # Input(component_id='usd_input', component_property='value'),
+      # Input(component_id='eur_input', component_property='value'),
+      # Input(component_id='gbp_input', component_property='value'),
+      # Input(component_id='chf_input', component_property='value'),
       Input(component_id='date_picker', component_property='start_date'),
-      Input(component_id='date_picker', component_property='end_date')]
+      Input(component_id='date_picker', component_property='end_date'),
+      Input(component_id='calculate', component_property='n_clicks')],
+
+     [State(component_id='usd_input', component_property='value'),
+      State(component_id='eur_input', component_property='value'),
+      State(component_id='gbp_input', component_property='value'),
+      State(component_id='chf_input', component_property='value')]
 )
-def update_graphs(time_range, checklist, usd_input, eur_input, gbp_input,
-                  chf_input, start_date, end_date):
+def update_graphs(time_range, checklist, start_date, end_date, n_clicks,
+                  usd_input, eur_input, gbp_input, chf_input):
 
     usd_graph, eur_graph, gbp_graph, chf_graph, big_graph \
-        = backend(time_range, checklist, usd_input, eur_input, gbp_input,
-                  chf_input, start_date, end_date)
+        = backend(time_range, checklist, start_date, end_date, n_clicks,
+                  usd_input, eur_input, gbp_input, chf_input)
 
     return [usd_graph, eur_graph, gbp_graph, chf_graph, big_graph]
 

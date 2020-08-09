@@ -1,7 +1,6 @@
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
-from datetime import datetime, date
+from datetime import date
 from plotly.subplots import make_subplots
 
 
@@ -59,7 +58,6 @@ def draw_plot(df_orig, col, cols_list, second_label, time_range, plot_types):
                        marker=dict(color="red"), name=second_label),
             secondary_y=True)
 
-
     # --- 4. Style plot
     graph.update_layout(margin=dict(t=25, r=0, l=0, b=35), showlegend=True)
     graph.update_xaxes(tickangle=30, tickfont=dict(size=10),
@@ -68,87 +66,3 @@ def draw_plot(df_orig, col, cols_list, second_label, time_range, plot_types):
     graph.update_yaxes(title_text="", secondary_y=True, color="red")
 
     return graph
-
-
-
-
-
-
-
-# def draw_plot_5yy(df, colname):
-#     # --- x ticks
-#     year_start = pd.to_datetime(df['timestamp'].iloc[0]).year
-#     year_end = pd.to_datetime(df['timestamp'].iloc[-1]).year
-#     xticks_val = [(x-year_start)*365 for x in range(year_start, year_end)
-#                   if x % 2 == 0]
-#     xticks_lab = [str(x) for x in range(year_start, year_end) if x % 2 == 0]
-#     # xticks_val = [0, 365 * 5, 365 * 10, 365 * 15]
-#     # xticks_lab = ['1999', '2004', '2009', '1203']
-#
-#     # --- plot
-#     graph = px.line(df, x='timestamp', y=colname)
-#     graph.add_scatter(x=df['timestamp'], y=df['USD-EUR'], mode='lines')
-#     graph.update_layout(margin=dict(t=30, r=10))
-#     graph.update_xaxes(tickangle=45, tickfont=dict(size=8),
-#                        tickvals=xticks_val,
-#                        ticktext=xticks_lab,
-#                        title_text='Czas', title_font={"size": 12})
-#     graph.update_yaxes(title_text=colname.replace('-', '/'),
-#                        title_font={"size": 14})
-#     return graph
-#
-#
-# def draw_plot_5y(df, col, cols_list, second_label):
-#     # --- x ticks
-#     year_start = pd.to_datetime(df['timestamp'].iloc[0]).year
-#     year_end = pd.to_datetime(df['timestamp'].iloc[-1]).year
-#     xticks_val = [(x-year_start)*365 for x in range(year_start, year_end)
-#                   if x % 2 == 0]
-#     xticks_lab = [str(x) for x in range(year_start, year_end) if x % 2 == 0]
-#
-#     # --- secondary plot preparation
-#     average_price = df[cols_list].mean(axis=1)
-#     # --- plot
-#     graph = make_subplots(specs=[[{"secondary_y": True}]])
-#     graph.add_trace(go.Scatter(x=df['timestamp'], y=df[col],
-#                                name=col.replace('-', ' / ')),
-#                                secondary_y=False)
-#     graph.add_trace(go.Scatter(x=df['timestamp'], y=average_price,
-#                                name=second_label), secondary_y=True)
-#
-#     # graph = px.line(df, x='timestamp', y=colname)
-#     # graph.add_scatter(x=df['timestamp'], y=df['USD-EUR'], mode='lines')
-#     graph.update_layout(margin=dict(t=30, r=0, l=0))
-#     graph.update_xaxes(tickangle=45, tickfont=dict(size=8),
-#                        tickvals=xticks_val,
-#                        ticktext=xticks_lab,
-#                        title_text='Czas', title_font={"size": 12})
-#     graph.update_yaxes(title_text="", secondary_y=False)
-#     graph.update_yaxes(title_text="", secondary_y=True)
-#     # graph.update_yaxes(title_text=colname.replace('-', '/'),
-#     #                    title_font={"size": 14})
-#     return graph
-#
-#
-# def draw_plot_1y(df, colname):
-#     graph = px.line(df, x='timestamp', y=colname)
-#     graph.update_layout(margin=dict(t=30, r=10))
-#     graph.update_xaxes(tickangle=15, tickfont=dict(size=8),
-#                        tickvals=[0, 365 * 5, 365 * 10, 365 * 15],
-#                        ticktext=['1999', '2004', '2009', '2013'],
-#                        title_text='Czas', title_font={"size": 12})
-#     graph.update_yaxes(title_text=colname.replace('-', '/'),
-#                        title_font={"size": 14})
-#     return graph
-#
-#
-# def draw_plot_1m(df, colname):
-#     graph = px.line(df, x='timestamp', y=colname)
-#     graph.update_layout(margin=dict(t=30, r=10))
-#     graph.update_xaxes(tickangle=15, tickfont=dict(size=8),
-#                        tickvals=[0, 365 * 5, 365 * 10, 365 * 15],
-#                        ticktext=['1999', '2004', '2009', '2013'],
-#                        title_text='Czas', title_font={"size": 12})
-#     graph.update_yaxes(title_text=colname.replace('-', '/'),
-#                        title_font={"size": 14})
-#     return graph
