@@ -2,7 +2,7 @@
 
 ## Ogólne
 
-- [ ] Cena dla jednego dnia jako średnia wszystkich godzin
+- [x] Cena dla jednego dnia jako średnia wszystkich godzin
 
 
 
