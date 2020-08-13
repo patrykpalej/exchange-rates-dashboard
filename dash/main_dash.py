@@ -26,15 +26,11 @@ app.layout = frontend()
 
      [Input(component_id='select_time_range', component_property='value'),
       Input(component_id="checklist", component_property="value"),
-      # Input(component_id='usd_input', component_property='value'),
-      # Input(component_id='eur_input', component_property='value'),
-      # Input(component_id='gbp_input', component_property='value'),
-      # Input(component_id='chf_input', component_property='value'),
-      Input(component_id='date_picker', component_property='start_date'),
-      Input(component_id='date_picker', component_property='end_date'),
       Input(component_id='calculate', component_property='n_clicks')],
 
-     [State(component_id='usd_input', component_property='value'),
+     [Input(component_id='date_picker', component_property='start_date'),
+      Input(component_id='date_picker', component_property='end_date'),
+      State(component_id='usd_input', component_property='value'),
       State(component_id='eur_input', component_property='value'),
       State(component_id='gbp_input', component_property='value'),
       State(component_id='chf_input', component_property='value')]

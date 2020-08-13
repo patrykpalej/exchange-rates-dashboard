@@ -44,13 +44,16 @@ def backend(time_range, checklist, start_date, end_date, n_clicks,
     # Value variation over time (right side)
     big_graph = px.line()
 
-    if usd_input is None and eur_input is None and gbp_input is None \
-            and chf_input is None:
-        pass
-    else:
-        big_graph = px.line([usd_input, eur_input], [gbp_input, chf_input])
+    days_elapsed = (end_date - start_date).days
+    days_range = []
 
-    # big_graph = px.line()
-    print(n_clicks)
+    # if usd_input is None and eur_input is None and gbp_input is None \
+    #         and chf_input is None:
+    #     pass
+    # else:
+    #     big_graph = px.line([usd_input, eur_input], [gbp_input, chf_input])
+    #
+    # # big_graph = px.line()
+    # print(n_clicks)
 
     return [usd_graph, eur_graph, gbp_graph, chf_graph, big_graph]
