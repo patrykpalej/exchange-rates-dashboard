@@ -1,6 +1,7 @@
 import pandas as pd
-import plotly.graph_objects as go
 from datetime import date
+import plotly.express as px
+import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 
@@ -65,4 +66,34 @@ def draw_plot(df_orig, col, cols_list, second_label, time_range, plot_types):
     graph.update_yaxes(title_text="", secondary_y=False, color="blue")
     graph.update_yaxes(title_text="", secondary_y=True, color="red")
 
+    return graph
+
+
+def draw_big_plot(days_range, values, values_dict):
+    # 1. Preparation
+    if len(days_range) < 365:
+        xticks_val \
+            = list(range(len(days_range)))[0::round(len(values) /
+                                                    min(len(days_range), 10))]
+        print(len(xticks_val))
+        xticks_lab = [str(date(x.year, x.month, x.day).strftime("%d/%m"))
+                      for x in [days_range[y] for y in xticks_val]]
+        xlabel \
+            = str(days_range[0].year) \
+            if days_range[0].year == days_range[-1].year \
+            else str(days_range[0].year) + "/" + str(days_range[-1].year)
+    else:
+        xticks_val = list(range(len(days_range)))[0::round(len(values)/10)]
+        xticks_lab = [str(date(x.year, x.month, x.day).strftime("%m/%y"))
+                      for x in [days_range[y] for y in xticks_val]]
+        xlabel = ""
+
+    # 2. Plot drawing
+    graph = px.line({"Całość": values})
+
+    graph.update_xaxes(title_text=xlabel, tickvals=xticks_val,
+                       ticktext=xticks_lab)
+    graph.update_yaxes(title_text="Wartość portfela [PLN]",
+                       titlefont=dict(size=18))
+    print(values_dict)
     return graph
