@@ -59,24 +59,25 @@ def frontend():
             dcc.Input(id="chf_input", type="text", placeholder="CHF",
                       style={"height": "20px", "width": "150px"})
         ], style={"display": "grid", "grid-row-gap": "20px",
-                  "position": "absolute", "top": "15%", "right": "30%"}),
+                  "position": "absolute", "top": "12%", "right": "30%"}),
 
         dcc.DatePickerRange(id="date_picker", display_format="DD-MM-YYYY",
                             min_date_allowed=datetime(2000, 1, 1),
                             max_date_allowed=datetime.now(),
-                            style={"top": "15%", "right": "5%",
+                            style={"top": "12%", "right": "5%",
                                    "position": "absolute"}),
 
-
-
-        html.Button("Oblicz", id="calculate", n_clicks=0,
-                    style={"width": "150px", "position": "absolute",
-                           "top": "30%",
-                           "right": "10%", "height": "30px"}),
+        dcc.Checklist(id="checklist2", value=[1], options=[
+            {"label": "Pokaż wykresy cząstkowe", "value": 1},
+            {"label": "Wartości na osi Y od 0", "value": 2},
+            {"label": "Uwzględnij inflację (2006-2019)", "value": 3}],
+                      style={"width": "20%", "position": "absolute",
+                             "display": "grid", "left": "78%", "top": "25%",
+                             "height": "10%"}),
 
         dcc.Graph(
-            style={"width": "50%", "height": "65%", "position": "absolute",
-                   "left": "50%", "top": "38%"}, id="big_graph", figure={})
+            style={"width": "49%", "height": "60%", "position": "absolute",
+                   "left": "50%", "top": "37%"}, id="big_graph", figure={})
     ])
 
     return layout_

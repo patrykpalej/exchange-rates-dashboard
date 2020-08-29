@@ -31,14 +31,15 @@ app.layout = frontend()
       Input(component_id='usd_input', component_property='value'),
       Input(component_id='eur_input', component_property='value'),
       Input(component_id='gbp_input', component_property='value'),
-      Input(component_id='chf_input', component_property='value')]
+      Input(component_id='chf_input', component_property='value'),
+      Input(component_id="checklist2", component_property="value")]
 )
-def update_graphs(time_range, checklist, start_date, end_date, # n_clicks,
-                  usd_input, eur_input, gbp_input, chf_input):
+def update_graphs(time_range, checklist, start_date, end_date,
+                  usd_input, eur_input, gbp_input, chf_input, checklist2):
 
     usd_graph, eur_graph, gbp_graph, chf_graph, big_graph \
-        = backend(time_range, checklist, start_date, end_date,  # n_clicks,
-                  usd_input, eur_input, gbp_input, chf_input)
+        = backend(time_range, checklist, start_date, end_date,
+                  usd_input, eur_input, gbp_input, chf_input, checklist2)
 
     return [usd_graph, eur_graph, gbp_graph, chf_graph, big_graph]
 

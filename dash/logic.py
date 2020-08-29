@@ -1,18 +1,11 @@
-import dash
-import pandas as pd
 import plotly.express as px
 from datetime import datetime, timedelta
-import matplotlib.pyplot as plt
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-from dash.exceptions import PreventUpdate
 
 from funcs import *
 
 
 def backend(time_range, checklist, start_date, end_date, usd_input, eur_input,
-            gbp_input, chf_input):
+            gbp_input, chf_input, checklist2):
 
     # Exchange rates (left side)
     df = pd.read_csv("exchange_rates_99_20.csv", sep=';',
@@ -44,6 +37,7 @@ def backend(time_range, checklist, start_date, end_date, usd_input, eur_input,
 
     # Value variation over time (right side)
     big_graph = px.line()
+    big_graph.update_layout(margin=dict(t=25, r=0, l=0, b=0))
 
     if start_date is not None and end_date is not None \
             and any([x not in [None, ""]
@@ -73,6 +67,6 @@ def backend(time_range, checklist, start_date, end_date, usd_input, eur_input,
                 values[d] += float(amount)*price
                 values_dict[curr_dict[curr_id]].append(float(amount)*price)
 
-        big_graph = draw_big_plot(days_range, values, values_dict)
+        big_graph = draw_big_plot(days_range, values, values_dict, checklist2)
 
     return [usd_graph, eur_graph, gbp_graph, chf_graph, big_graph]
