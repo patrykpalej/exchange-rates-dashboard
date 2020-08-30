@@ -2,6 +2,7 @@ import pickle
 import pandas as pd
 from datetime import date, datetime
 import plotly.graph_objects as go
+import plotly.express as px
 from plotly.subplots import make_subplots
 
 
@@ -110,13 +111,13 @@ def draw_big_plot(days_range, values, values_dict, checklist):
                     go.Scatter(x=[days_range[0], days_range[-1]],
                                y=[values_dict[curr][0], values_dict[curr][-1]],
                                marker=dict(color=color_dict[curr]),
-                               showlegend=False))
+                               showlegend=False, line={"dash": "dash"}))
 
     if 3 in checklist:
         graph.update_layout(yaxis=dict(range=[0, 1.1*max(values)]))
 
     if 4 in checklist:
-        basket_price = pickle.load(open("inflation_rates.pickle", "rb"))
+        basket_price = pickle.load(open("basket_cost_in_time.pickle", "rb"))
         values_inf = calculate_inflation(values, basket_price, days_range)
 
         graph.add_trace(go.Scatter(y=values_inf, x=days_range,
@@ -126,14 +127,15 @@ def draw_big_plot(days_range, values, values_dict, checklist):
             graph.add_trace(
                 go.Scatter(x=[days_range[0], days_range[-1]], showlegend=False,
                            y=[values_inf[0], values_inf[-1]],
-                           marker=dict(color="#A9A9A9")))
+                           marker=dict(color="#A9A9A9"), line={"dash": "dash"}))
 
     graph.add_trace(go.Scatter(y=values, x=days_range,
                                marker=dict(color="black"), name="Całość"))
     if 2 in checklist:
         graph.add_trace(
             go.Scatter(x=[days_range[0], days_range[-1]], showlegend=False,
-                       y=[values[0], values[-1]], marker=dict(color="black")))
+                       y=[values[0], values[-1]], marker=dict(color="black"),
+                       line={"dash": "dash"}))
 
     return graph
 
