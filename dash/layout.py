@@ -69,11 +69,12 @@ def frontend():
 
         dcc.Checklist(id="checklist2", value=[1], options=[
             {"label": "Pokaż wykresy cząstkowe", "value": 1},
-            {"label": "Wartości na osi Y od 0", "value": 2},
-            {"label": "Uwzględnij inflację (2006-2019)", "value": 3}],
+            {"label": "Pokaż linie trendu", "value": 2},
+            {"label": "Wartości na osi Y od 0", "value": 3},
+            {"label": "Uwzględnij inflację (2006-2019)", "value": 4}],
                       style={"width": "20%", "position": "absolute",
-                             "display": "grid", "left": "78%", "top": "25%",
-                             "height": "10%"}),
+                             "display": "grid", "left": "78%", "top": "22%",
+                             "height": "13%"}),
 
         dcc.Graph(
             style={"width": "49%", "height": "60%", "position": "absolute",

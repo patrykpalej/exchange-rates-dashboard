@@ -105,26 +105,40 @@ def draw_big_plot(days_range, values, values_dict, checklist):
             graph.add_trace(
                 go.Scatter(x=days_range, y=values_dict[curr],
                            marker=dict(color=color_dict[curr]), name=curr))
-
-    if 2 in checklist:
-        graph.update_layout(yaxis=dict(range=[0, 1.1*max(values)]))
+            if 2 in checklist:
+                graph.add_trace(
+                    go.Scatter(x=[days_range[0], days_range[-1]],
+                               y=[values_dict[curr][0], values_dict[curr][-1]],
+                               marker=dict(color=color_dict[curr]),
+                               showlegend=False))
 
     if 3 in checklist:
-        inflation_rates = pickle.load(open("inflation_rates.pickle", "rb"))
-        values_inf = calculate_inflation(values, inflation_rates, days_range)
+        graph.update_layout(yaxis=dict(range=[0, 1.1*max(values)]))
 
-        graph.add_trace(go.Scatter(y=pd.Series(values_inf),
-                                   x=days_range, marker=dict(color="#A9A9A9"),
+    if 4 in checklist:
+        basket_price = pickle.load(open("inflation_rates.pickle", "rb"))
+        values_inf = calculate_inflation(values, basket_price, days_range)
+
+        graph.add_trace(go.Scatter(y=values_inf, x=days_range,
+                                   marker=dict(color="#A9A9A9"),
                                    name="Po inflacji"))
+        if 2 in checklist:
+            graph.add_trace(
+                go.Scatter(x=[days_range[0], days_range[-1]], showlegend=False,
+                           y=[values_inf[0], values_inf[-1]],
+                           marker=dict(color="#A9A9A9")))
 
-    graph.add_trace(go.Scatter(y=pd.Series(values), x=days_range,
+    graph.add_trace(go.Scatter(y=values, x=days_range,
                                marker=dict(color="black"), name="Całość"))
+    if 2 in checklist:
+        graph.add_trace(
+            go.Scatter(x=[days_range[0], days_range[-1]], showlegend=False,
+                       y=[values[0], values[-1]], marker=dict(color="black")))
 
     return graph
 
 
-def calculate_inflation(values, inflation_rates, days_range):
-    # values_inf = [1 * x for x in values]
+def calculate_inflation(values, basket_price, days_range):
     # ---
     basket_price = {}
     x = 20
@@ -132,8 +146,20 @@ def calculate_inflation(values, inflation_rates, days_range):
         for m in list(range(1, 13)):
             basket_price[(y, m)] = x
             x += 0.3
-    print(basket_price)
+    # print(basket_price)
     # ---
+    if (days_range[0].year, days_range[0].month) in list(basket_price.keys()):
+        start_price = basket_price[(days_range[0].year, days_range[0].month)]
+
+    elif date(year=days_range[0].year, month=days_range[0].month, day=1) < \
+         date(year=list(basket_price.keys())[0][0],
+              month=list(basket_price.keys())[0][1], day=1):
+        start_price = basket_price[list(basket_price.keys())[0]]
+    else:
+        start_price = None
+
+    print(start_price)
+
     values_inf = []
     for val, day in zip(values, days_range):
 
@@ -146,9 +172,14 @@ def calculate_inflation(values, inflation_rates, days_range):
                             month=list(basket_price.keys())[-1][1], day=1,
                             hour=1, minute=0):
             # after inflation data registration
-            values_inf.append(val/(list(basket_price.values()[-1])/basket_price[])))
+            if start_price:
+                values_inf.append(val/(list(basket_price.values())[-1]
+                                       / start_price))
+            else:
+                values_inf.append(val)
         else:
             # during inflation data registration
-            values_inf.append(val/inflation_rates[(day.year, day.month)])
+            values_inf.append(val/(basket_price[(day.year, day.month)]
+                                   / start_price))
 
     return values_inf
