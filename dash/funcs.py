@@ -148,7 +148,6 @@ def calculate_inflation(values, basket_price, days_range):
         for m in list(range(1, 13)):
             basket_price[(y, m)] = x
             x += 0.3
-    # print(basket_price)
     # ---
     if (days_range[0].year, days_range[0].month) in list(basket_price.keys()):
         start_price = basket_price[(days_range[0].year, days_range[0].month)]
@@ -159,8 +158,6 @@ def calculate_inflation(values, basket_price, days_range):
         start_price = basket_price[list(basket_price.keys())[0]]
     else:
         start_price = None
-
-    print(start_price)
 
     values_inf = []
     for val, day in zip(values, days_range):
