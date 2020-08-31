@@ -9,4 +9,19 @@ Currencies considered in the project are: PLN, USD, EUR, GBP. CHF.
 Functionalities:
 
 - Plotting prices of the currencies (USD, EUR, GBP, CHF) in PLN as well as in all the other currencies (averaged)
-- Plotting value of investment in time considering inflation and components of all currencies![img](img/img.png)
+- Plotting value of investment in time considering inflation and components of all currencies
+
+
+
+![img](img/img.png)
+
+----
+
+
+
+![img](img/img1.png)
+
+A - Visualization of currencies prices
+
+B - Plotting investment value in time
+
