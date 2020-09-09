@@ -117,7 +117,8 @@ def draw_big_plot(days_range, values, values_dict, checklist):
         graph.update_layout(yaxis=dict(range=[0, 1.1*max(values)]))
 
     if 4 in checklist:
-        basket_price = pickle.load(open("basket_cost_in_time.pickle", "rb"))
+        basket_price = pickle.load(open("../data/basket_cost_in_time.pickle",
+                                        "rb"))
         values_inf = calculate_inflation(values, basket_price, days_range)
 
         graph.add_trace(go.Scatter(y=values_inf, x=days_range,

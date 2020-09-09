@@ -8,7 +8,7 @@ def backend(time_range, checklist, start_date, end_date, usd_input, eur_input,
             gbp_input, chf_input, checklist2):
 
     # Exchange rates (left side)
-    df = pd.read_csv("exchange_rates_99_20.csv", sep=';',
+    df = pd.read_csv("../data/exchange_rates_99_20.csv", sep=';',
                      index_col="index")
 
     usd_graph \
