@@ -7,7 +7,7 @@ def frontend():
     layout_ = html.Div([
         html.H1("Kursy walut",
                 style={"text-align": "center", "fontSize": "50px",
-                       "margin": "0"}),
+                       "margin": "0", "font-family": "Cambria"}),
 
         html.H2("Opcje wizualizacji", style={"top": "18%", "left": "40%",
                                              "position": "absolute"}),

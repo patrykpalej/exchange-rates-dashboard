@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 
 def get_data_from_range(start_date, end_date, c):
@@ -11,21 +11,22 @@ def get_data_from_range(start_date, end_date, c):
         columns=['USD-EUR', 'USD-GBP', 'USD-CHF', 'EUR-USD', 'EUR-GBP',
                  'EUR-CHF', 'GBP-USD', 'GBP-EUR', 'GBP-CHF', 'CHF-USD',
                  'CHF-EUR', 'CHF-GBP', 'USD-PLN', 'EUR-PLN', 'GBP-PLN',
-                 'CHF-PLN', 'timestamp'],
+                 'CHF-PLN'],
         index=pd.to_datetime([start_date + timedelta(days=x)
                               for x in range(days_elapsed)]))
 
     # b) get data
     for i in df.index:
+
         dt = pd.to_datetime(i).date()
-        df['timestamp'].loc[dt] = dt
+        dtm = datetime(dt.year, dt.month, dt.day)
 
         # USD
         curr_list = ["EUR", "GBP", "CHF", "PLN"]
 
         usd_whole_day_list \
-            = [dict((k, c.get_rates("USD", dt + timedelta(hours=3 * i))[k])
-                    for k in curr_list) for i in range(8)]
+            = [dict((k, c.get_rates("USD", dtm + timedelta(hours=6 * j))[k])
+                    for k in curr_list) for j in range(4)]
 
         df['USD-EUR'].loc[dt] = np.average([_usd['EUR']
                                             for _usd in usd_whole_day_list])
@@ -40,8 +41,8 @@ def get_data_from_range(start_date, end_date, c):
         curr_list = ["USD", "GBP", "CHF", "PLN"]
 
         eur_whole_day_list \
-            = [dict((k, c.get_rates("EUR", dt + timedelta(hours=3 * i))[k])
-                    for k in curr_list) for i in range(8)]
+            = [dict((k, c.get_rates("EUR", dtm + timedelta(hours=6 * j))[k])
+                    for k in curr_list) for j in range(4)]
 
         df['EUR-USD'].loc[dt] = np.average([_eur['USD']
                                             for _eur in eur_whole_day_list])
@@ -56,8 +57,8 @@ def get_data_from_range(start_date, end_date, c):
         curr_list = ["USD", "EUR", "CHF", "PLN"]
 
         gbp_whole_day_list \
-            = [dict((k, c.get_rates("GBP", dt + timedelta(hours=3 * i))[k])
-                    for k in curr_list) for i in range(8)]
+            = [dict((k, c.get_rates("GBP", dtm + timedelta(hours=6 * j))[k])
+                    for k in curr_list) for j in range(4)]
 
         df['GBP-USD'].loc[dt] = np.average([_gbp['USD']
                                             for _gbp in gbp_whole_day_list])
@@ -72,8 +73,8 @@ def get_data_from_range(start_date, end_date, c):
         curr_list = ["USD", "EUR", "GBP", "PLN"]
 
         chf_whole_day_list \
-            = [dict((k, c.get_rates("CHF", dt + timedelta(hours=3 * i))[k])
-                    for k in curr_list) for i in range(8)]
+            = [dict((k, c.get_rates("CHF", dtm + timedelta(hours=6 * j))[k])
+                    for k in curr_list) for j in range(4)]
 
         df['CHF-USD'].loc[dt] = np.average([_chf['USD']
                                             for _chf in chf_whole_day_list])
@@ -83,6 +84,9 @@ def get_data_from_range(start_date, end_date, c):
                                             for _chf in chf_whole_day_list])
         df['CHF-PLN'].loc[dt] = np.average([_chf['PLN']
                                             for _chf in chf_whole_day_list])
+
+    df.index = df.index.strftime("%d.%m.%Y")
+    df.index.rename("timestamp", inplace=True)
 
     return df
 

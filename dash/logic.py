@@ -8,8 +8,9 @@ def backend(time_range, checklist, start_date, end_date, usd_input, eur_input,
             gbp_input, chf_input, checklist2):
 
     # Exchange rates (left side)
-    df = pd.read_csv("../data/exchange_rates_99_20.csv", sep=';',
-                     index_col="index")
+    # print(pd.read_csv("../data/exchange_rates_99_20.csv", sep=';'))
+    df = pd.read_csv("../data/exchange_rates.csv", sep=';',
+                     index_col="timestamp")
 
     usd_graph \
         = draw_plot(df, col="USD-PLN",
@@ -63,7 +64,7 @@ def backend(time_range, checklist, start_date, end_date, usd_input, eur_input,
                               hour=1, minute=0, second=0)
                 price \
                     = df[curr_dict[curr_id]+"-PLN"].loc[dt.strftime(
-                        "%d.%m.%Y %H:%M")]
+                        "%d.%m.%Y")]
                 values[d] += float(amount)*price
                 values_dict[curr_dict[curr_id]].append(float(amount)*price)
 
