@@ -1,0 +1,1 @@
+"E:\Anaconda\python.exe" "C:\Users\Patryk\Dropbox\Dev\Kursy walut\dash\main_dash.py"

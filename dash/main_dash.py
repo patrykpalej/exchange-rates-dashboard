@@ -45,4 +45,4 @@ def update_graphs(time_range, checklist, start_date, end_date,
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, port=8051)
