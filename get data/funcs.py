@@ -89,8 +89,3 @@ def get_data_from_range(start_date, end_date, c):
     df.index.rename("timestamp", inplace=True)
 
     return df
-
-
-def get_data_until_today(start_date, end_date, c):
-
-    return 1

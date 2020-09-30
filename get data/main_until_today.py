@@ -1,8 +1,8 @@
 import pandas as pd
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from forex_python.converter import CurrencyRates
 
-from funcs import get_data_until_today, get_data_from_range
+from funcs import get_data_from_range
 
 
 c = CurrencyRates()
@@ -14,7 +14,6 @@ start_date = datetime.date(datetime.strptime(df_pre.index[-1], "%d.%m.%Y")
 end_date = datetime.date(datetime.now())
 
 df_new = get_data_from_range(start_date, end_date, c)
-# df_new = get_data_until_today(start_date, end_date, c)
 df = pd.concat([df_pre, df_new])
 
 df.to_csv("../data/exchange_rates.csv", sep=';')
