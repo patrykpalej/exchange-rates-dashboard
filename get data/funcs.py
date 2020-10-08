@@ -1,10 +1,13 @@
-import numpy as np
+import requests
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
-def get_data_from_range(start_date, end_date, c):
+def get_data_from_range(start_date, end_date):
     days_elapsed = (end_date - start_date).days + 1
+    api_key = "5bd481457d85a23c162b86870a3c7111"
+    # api_key = "c6306de007a4cf317334f9cd73156c53"
+    api_curr_list = "EUR,GBP,CHF,PLN"
 
     # a) Create an empty df
     df = pd.DataFrame(
@@ -16,74 +19,43 @@ def get_data_from_range(start_date, end_date, c):
                               for x in range(days_elapsed)]))
 
     # b) get data
-    for i in df.index:
+    for i in df.index.date:
+        #  -- get json from API
+        date_ = i.strftime("%Y-%m-%d")
+        url = "http://api.currencylayer.com/historical?access_key=" \
+              + api_key + "&date=" + date_ + "&currencies=" + api_curr_list \
+              + "&format=1"
+        resp = requests.get(url).json()
+        resp_dict = {resp["date"]: resp["quotes"]}
+        one_day_data = resp_dict[date_]
+        # ---------
 
         dt = pd.to_datetime(i).date()
-        dtm = datetime(dt.year, dt.month, dt.day)
 
         # USD
-        curr_list = ["EUR", "GBP", "CHF", "PLN"]
-
-        usd_whole_day_list \
-            = [dict((k, c.get_rates("USD", dtm + timedelta(hours=6 * j))[k])
-                    for k in curr_list) for j in range(4)]
-
-        df['USD-EUR'].loc[dt] = np.average([_usd['EUR']
-                                            for _usd in usd_whole_day_list])
-        df['USD-GBP'].loc[dt] = np.average([_usd['GBP']
-                                            for _usd in usd_whole_day_list])
-        df['USD-CHF'].loc[dt] = np.average([_usd['CHF']
-                                            for _usd in usd_whole_day_list])
-        df['USD-PLN'].loc[dt] = np.average([_usd['PLN']
-                                            for _usd in usd_whole_day_list])
+        df['USD-EUR'].loc[dt] = one_day_data["USDEUR"]
+        df['USD-GBP'].loc[dt] = one_day_data["USDGBP"]
+        df['USD-CHF'].loc[dt] = one_day_data["USDCHF"]
+        df['USD-PLN'].loc[dt] = one_day_data["USDPLN"]
 
         # EUR
-        curr_list = ["USD", "GBP", "CHF", "PLN"]
-
-        eur_whole_day_list \
-            = [dict((k, c.get_rates("EUR", dtm + timedelta(hours=6 * j))[k])
-                    for k in curr_list) for j in range(4)]
-
-        df['EUR-USD'].loc[dt] = np.average([_eur['USD']
-                                            for _eur in eur_whole_day_list])
-        df['EUR-GBP'].loc[dt] = np.average([_eur['GBP']
-                                            for _eur in eur_whole_day_list])
-        df['EUR-CHF'].loc[dt] = np.average([_eur['CHF']
-                                            for _eur in eur_whole_day_list])
-        df['EUR-PLN'].loc[dt] = np.average([_eur['PLN']
-                                            for _eur in eur_whole_day_list])
+        df['EUR-USD'].loc[dt] = 1 / one_day_data['USDEUR']
+        df['EUR-GBP'].loc[dt] = one_day_data['USDGBP'] / one_day_data['USDEUR']
+        df['EUR-CHF'].loc[dt] = one_day_data['USDCHF'] / one_day_data['USDEUR']
+        df['EUR-PLN'].loc[dt] = one_day_data['USDPLN'] / one_day_data['USDEUR']
 
         # GBP
-        curr_list = ["USD", "EUR", "CHF", "PLN"]
-
-        gbp_whole_day_list \
-            = [dict((k, c.get_rates("GBP", dtm + timedelta(hours=6 * j))[k])
-                    for k in curr_list) for j in range(4)]
-
-        df['GBP-USD'].loc[dt] = np.average([_gbp['USD']
-                                            for _gbp in gbp_whole_day_list])
-        df['GBP-EUR'].loc[dt] = np.average([_gbp['EUR']
-                                            for _gbp in gbp_whole_day_list])
-        df['GBP-CHF'].loc[dt] = np.average([_gbp['CHF']
-                                            for _gbp in gbp_whole_day_list])
-        df['GBP-PLN'].loc[dt] = np.average([_gbp['PLN']
-                                            for _gbp in gbp_whole_day_list])
+        df['GBP-USD'].loc[dt] = 1 / one_day_data['USDGBP']
+        df['GBP-EUR'].loc[dt] = one_day_data['USDEUR'] / one_day_data['USDGBP']
+        df['GBP-CHF'].loc[dt] = one_day_data['USDCHF'] / one_day_data['USDGBP']
+        df['GBP-PLN'].loc[dt] = one_day_data['USDPLN'] / one_day_data['USDGBP']
 
         # CHF
-        curr_list = ["USD", "EUR", "GBP", "PLN"]
 
-        chf_whole_day_list \
-            = [dict((k, c.get_rates("CHF", dtm + timedelta(hours=6 * j))[k])
-                    for k in curr_list) for j in range(4)]
-
-        df['CHF-USD'].loc[dt] = np.average([_chf['USD']
-                                            for _chf in chf_whole_day_list])
-        df['CHF-EUR'].loc[dt] = np.average([_chf['EUR']
-                                            for _chf in chf_whole_day_list])
-        df['CHF-GBP'].loc[dt] = np.average([_chf['GBP']
-                                            for _chf in chf_whole_day_list])
-        df['CHF-PLN'].loc[dt] = np.average([_chf['PLN']
-                                            for _chf in chf_whole_day_list])
+        df['CHF-USD'].loc[dt] = 1 / one_day_data['USDCHF']
+        df['CHF-EUR'].loc[dt] = one_day_data['USDEUR'] / one_day_data['USDCHF']
+        df['CHF-GBP'].loc[dt] = one_day_data['USDGBP'] / one_day_data['USDCHF']
+        df['CHF-PLN'].loc[dt] = one_day_data['USDPLN'] / one_day_data['USDCHF']
 
     df.index = df.index.strftime("%d.%m.%Y")
     df.index.rename("timestamp", inplace=True)
