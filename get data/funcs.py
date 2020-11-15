@@ -5,8 +5,10 @@ from datetime import timedelta
 
 def get_data_from_range(start_date, end_date):
     days_elapsed = (end_date - start_date).days + 1
-    api_key = "5bd481457d85a23c162b86870a3c7111"
-    # api_key = "c6306de007a4cf317334f9cd73156c53"
+    api_key = "5bd481457d85a23c162b86870a3c7111"   # patrykpalej@gmail.com
+    # api_key = "c6306de007a4cf317334f9cd73156c53"  # palej@agh.edu.pl
+    # api_key = "bef18344d09a9963fda9d0c8402ace0e"   # patryk.palej@comarch.com
+    
     api_curr_list = "EUR,GBP,CHF,PLN"
 
     # a) Create an empty df
